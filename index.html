@@ -41,6 +41,21 @@
 * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
 body { font-family:var(--font); background:var(--bg); color:var(--text); max-width:430px; margin:0 auto; min-height:100vh; min-height:100dvh; overflow-x:hidden; -webkit-font-smoothing:antialiased; }
 
+/* Onboarding */
+@keyframes onboardFade{from{opacity:0;transform:scale(.95) translateY(20px)}to{opacity:1;transform:scale(1) translateY(0)}}
+@keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+#onboard{position:fixed;inset:0;background:var(--bg);z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px;text-align:center;animation:onboardFade .6s ease}
+#onboard.hide{display:none}
+.ob-icon{font-size:72px;margin-bottom:24px;animation:breathe 3s ease infinite}
+.ob-title{font-size:30px;font-weight:800;letter-spacing:-0.5px;margin-bottom:6px}
+.ob-title span{color:var(--blue)}
+.ob-sub{font-size:14px;color:var(--text2);line-height:1.6;margin-bottom:28px;max-width:300px}
+.ob-input{width:100%;max-width:280px;padding:14px;border:1.5px solid var(--sep);border-radius:14px;font-size:16px;background:var(--card);color:var(--text);outline:none;text-align:center;font-family:var(--font);margin-bottom:14px}
+.ob-input:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(0,122,255,.1)}
+.ob-btn{width:100%;max-width:280px;padding:14px;background:var(--blue);color:#fff;border:none;border-radius:14px;font-size:16px;font-weight:700;cursor:pointer;font-family:var(--font);box-shadow:0 4px 20px rgba(0,122,255,.25)}
+.ob-btn:active{opacity:.85}
+.ob-skip{margin-top:14px;color:var(--text2);font-size:13px;background:none;border:none;cursor:pointer;font-family:var(--font)}
+
 /* Screens */
 .screen { display:none; padding:0 20px 100px; animation:fadeIn .25s ease; }
 .screen.active { display:block; }
@@ -83,11 +98,11 @@ body { font-family:var(--font); background:var(--bg); color:var(--text); max-wid
 .xp-fill { height:100%; background:linear-gradient(90deg,var(--blue),var(--purple)); border-radius:4px; transition:width .5s ease; }
 
 .stat-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:10px; }
-.stat-box { background:var(--card); border-radius:var(--r); padding:14px; }
+.stat-box { background:var(--card); border-radius:var(--r); padding:14px; box-shadow:0 2px 12px rgba(0,0,0,.04); }
 .stat-val { font-size:26px; font-weight:700; }
 .stat-lbl { font-size:11px; color:var(--text2); font-weight:600; text-transform:uppercase; letter-spacing:.3px; margin-top:2px; }
 
-.streak-card { display:flex; align-items:center; gap:14px; background:linear-gradient(135deg,#ff9500,#ff2d55); border-radius:var(--r); padding:16px; margin-bottom:10px; color:#fff; }
+.streak-card { display:flex; align-items:center; gap:14px; background:linear-gradient(135deg,#ff9500,#ff2d55); border-radius:var(--r); padding:16px; margin-bottom:10px; color:#fff; box-shadow:0 10px 40px rgba(255,45,85,.2); }
 .streak-num { font-size:36px; font-weight:800; }
 .streak-text { font-size:14px; font-weight:600; opacity:.9; }
 .streak-sub { font-size:11px; opacity:.7; }
@@ -180,8 +195,8 @@ body { font-family:var(--font); background:var(--bg); color:var(--text); max-wid
 
 /* ===== FINANCE ===== */
 .finance-summary { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:12px; }
-.fin-card { padding:16px; border-radius:var(--r); color:#fff; }
-.fin-val { font-size:24px; font-weight:700; }
+.fin-card { padding:16px; border-radius:var(--r); color:#fff; box-shadow:0 0 20px rgba(0,0,0,.12); }
+.fin-val { font-size:22px; font-weight:900; letter-spacing:-0.5px; }
 .fin-lbl { font-size:11px; opacity:.8; font-weight:600; margin-top:2px; }
 .expense-item { display:flex; align-items:center; gap:12px; padding:12px 0; border-bottom:1px solid var(--sep); }
 .expense-item:last-child { border:none; }
@@ -203,7 +218,7 @@ body { font-family:var(--font); background:var(--bg); color:var(--text); max-wid
 /* ===== ANALYTICS ===== */
 .chart-card { background:var(--card); border-radius:var(--r); padding:16px; margin-bottom:12px; }
 .chart-title { font-size:14px; font-weight:650; margin-bottom:12px; }
-.chart-wrap { position:relative; width:100%; height:clamp(180px,30vh,220px); }
+.chart-wrap { position:relative; width:100%; height:clamp(220px,38vh,300px); }
 .heatmap { display:grid; grid-template-columns:repeat(7,1fr); gap:3px; }
 .heat-cell { aspect-ratio:1; border-radius:3px; background:var(--sep); }
 .heat-1 { background:rgba(52,199,89,.2); }
@@ -279,6 +294,16 @@ textarea.f-input { resize:none; }
 </head>
 <body>
 
+<!-- ONBOARDING -->
+<div id="onboard">
+<div class="ob-icon">⚡</div>
+<div class="ob-title">Welcome to <span>Pulsekit</span></div>
+<div class="ob-sub">Your personal life management app. Track tasks, build habits, stay focused, and achieve your goals.</div>
+<input class="ob-input" id="obName" placeholder="Enter your name" autofocus>
+<button class="ob-btn" onclick="startOnboard()">Get Started →</button>
+<button class="ob-skip" onclick="startOnboard()">Skip for now</button>
+</div>
+
 <!-- SCREENS -->
 <div class="screen active" id="s-home"></div>
 <div class="screen" id="s-tasks"></div>
@@ -341,6 +366,19 @@ textarea.f-input { resize:none; }
   </div>
 </div>
 
+<!-- Habit Sheet -->
+<div class="sheet-bg" id="habitSheet" onclick="if(event.target===this)closeHabitSheet()">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-head"><h2 id="habitSheetTitle">New Habit</h2><button class="sheet-x" onclick="closeHabitSheet()">&times;</button></div>
+    <div class="sheet-body">
+      <div class="f-group"><label class="f-label">Habit Name</label><input class="f-input" id="habitInpName" placeholder="e.g. Drink water, Exercise..." /></div>
+      <div class="f-group"><label class="f-label">Icon</label><div id="habitIconPicker" style="display:flex;gap:6px;flex-wrap:wrap"></div></div>
+      <button class="submit-btn" id="habitSubmitBtn" onclick="submitHabit()">Add Habit</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 <canvas class="confetti" id="confetti"></canvas>
 
@@ -357,40 +395,20 @@ const CATS = [
 
 const EXP_CATS = ['Food','Transport','Shopping','Bills','Entertainment','Health','Other'];
 
-const DEFAULT_TASKS = [
-  {id:'t1',title:'Morning workout',notes:'30 min cardio',done:false,pri:'high',cat:'health',date:'2026-05-30',subs:[{t:'Push-ups 3x15',d:false},{t:'Running 20 min',d:false}],created:Date.now()},
-  {id:'t2',title:'Complete project proposal',notes:'Include budget and timeline',done:false,pri:'high',cat:'work',date:'2026-06-02',subs:[],created:Date.now()-1e3},
-  {id:'t3',title:'Study DSA Chapter 4',notes:'Trees and Graphs',done:false,pri:'high',cat:'study',date:'2026-05-31',subs:[{t:'Read theory',d:false},{t:'Solve 5 problems',d:false}],created:Date.now()-2e3},
-  {id:'t4',title:'Buy groceries',notes:'Veggies, fruits, milk',done:false,pri:'medium',cat:'shopping',date:'2026-05-31',subs:[{t:'Tomatoes',d:false},{t:'Spinach',d:false},{t:'Milk',d:false}],created:Date.now()-3e3},
-  {id:'t5',title:'Review monthly budget',notes:'',done:false,pri:'medium',cat:'finance',date:'2026-06-01',subs:[],created:Date.now()-4e3},
-  {id:'t6',title:'Read 30 pages',notes:'Current book',done:false,pri:'low',cat:'personal',date:'',subs:[],created:Date.now()-5e3},
-  {id:'t7',title:'Call dentist',notes:'',done:true,pri:'medium',cat:'health',date:'2026-05-28',subs:[],created:Date.now()-6e3},
-  {id:'t8',title:'Update resume',notes:'Add recent projects',done:true,pri:'medium',cat:'work',date:'2026-05-27',subs:[],created:Date.now()-7e3},
-];
+const DEFAULT_TASKS = [];
 
 const DEFAULT_HABITS = [
-  {id:'h1',name:'Drink 8 glasses water',icon:'💧',color:'#5ac8fa',streak:7,week:[1,1,1,1,1,1,0],today:false},
-  {id:'h2',name:'Morning exercise',icon:'🏋️',color:'#ff2d55',streak:5,week:[1,1,0,1,1,1,0],today:false},
-  {id:'h3',name:'Read 30 minutes',icon:'📚',color:'#af52de',streak:12,week:[1,1,1,1,1,1,0],today:false},
-  {id:'h4',name:'Meditate',icon:'🧘',color:'#34c759',streak:3,week:[0,1,0,1,1,0,0],today:false},
-  {id:'h5',name:'No junk food',icon:'🥗',color:'#ff9500',streak:9,week:[1,1,1,1,0,1,0],today:false},
-  {id:'h6',name:'Sleep by 11 PM',icon:'😴',color:'#5856d6',streak:4,week:[1,0,1,1,1,0,0],today:false},
+  {id:'h1',name:'Drink 8 glasses water',icon:'💧',color:'#5ac8fa',streak:0,week:[0,0,0,0,0,0,0],today:false},
+  {id:'h2',name:'Morning exercise',icon:'🏋️',color:'#ff2d55',streak:0,week:[0,0,0,0,0,0,0],today:false},
+  {id:'h3',name:'Read 30 minutes',icon:'📚',color:'#af52de',streak:0,week:[0,0,0,0,0,0,0],today:false},
+  {id:'h4',name:'Meditate',icon:'🧘',color:'#34c759',streak:0,week:[0,0,0,0,0,0,0],today:false},
+  {id:'h5',name:'No junk food',icon:'🥗',color:'#ff9500',streak:0,week:[0,0,0,0,0,0,0],today:false},
+  {id:'h6',name:'Sleep by 11 PM',icon:'😴',color:'#5856d6',streak:0,week:[0,0,0,0,0,0,0],today:false},
 ];
 
-const DEFAULT_EXPENSES = [
-  {id:'e1',name:'Lunch',amt:180,cat:'Food',date:'2026-05-30'},
-  {id:'e2',name:'Auto fare',amt:75,cat:'Transport',date:'2026-05-30'},
-  {id:'e3',name:'Netflix',amt:199,cat:'Entertainment',date:'2026-05-29'},
-  {id:'e4',name:'Groceries',amt:450,cat:'Shopping',date:'2026-05-29'},
-  {id:'e5',name:'Coffee',amt:120,cat:'Food',date:'2026-05-30'},
-];
+const DEFAULT_EXPENSES = [];
 
-const DEFAULT_GOALS = [
-  {id:'g1',title:'Save ₹1,00,000',desc:'Emergency fund target',pct:72,color:'#34c759'},
-  {id:'g2',title:'Complete DSA course',desc:'450 problems solved',pct:45,color:'#af52de'},
-  {id:'g3',title:'Run 5K under 25 min',desc:'Current: 28 min',pct:60,color:'#ff2d55'},
-  {id:'g4',title:'Read 24 books this year',desc:'14 books done',pct:58,color:'#007aff'},
-];
+const DEFAULT_GOALS = [];
 
 const ACHIEVEMENTS = [
   {icon:'🔥',name:'7-Day Streak',req:s=>s.streak>=7},
@@ -405,6 +423,7 @@ const ACHIEVEMENTS = [
 
 let tasks=[],habits=[],expenses=[],goals=[];
 let xp=0,level=1,streak=0,focusMins=0,tasksDone=0;
+let userName='';
 let curScreen='home',tFilter='all',editTaskId=null;
 let selPri='medium',selCat='work',subFields=[];
 let timerState='idle',timerMode='work',timerSec=25*60,timerInterval=null;
@@ -418,7 +437,8 @@ function loadAll(){
   goals=JSON.parse(localStorage.getItem('pk_goals')||'null')||[...DEFAULT_GOALS];
   const g=JSON.parse(localStorage.getItem('pk_game')||'null');
   if(g){xp=g.xp;level=g.level;streak=g.streak;focusMins=g.focusMins;tasksDone=g.tasksDone;}
-  else{xp=320;level=3;streak=14;focusMins=180;tasksDone=12;}
+  else{xp=0;level=1;streak=0;focusMins=0;tasksDone=0;}
+  userName=localStorage.getItem('pk_name')||'';
   darkMode=localStorage.getItem('pk_dark')==='true';
   if(darkMode)document.documentElement.setAttribute('data-theme','dark');
 }
@@ -428,6 +448,25 @@ function saveAll(){
   localStorage.setItem('pk_expenses',JSON.stringify(expenses));
   localStorage.setItem('pk_goals',JSON.stringify(goals));
   localStorage.setItem('pk_game',JSON.stringify({xp,level,streak,focusMins,tasksDone}));
+}
+
+function startOnboard(){
+  const n=document.getElementById('obName').value.trim();
+  if(n)userName=n;
+  localStorage.setItem('pk_name',userName);
+  localStorage.setItem('pk_onboard','1');
+  document.getElementById('onboard').classList.add('hide');
+  document.querySelector('.bottom-nav').style.display='flex';
+  document.getElementById('fab').style.display='flex';
+  saveAll();
+  go('home');
+}
+
+if(localStorage.getItem('pk_onboard')){
+  document.getElementById('onboard').classList.add('hide');
+} else {
+  document.querySelector('.bottom-nav').style.display='none';
+  document.getElementById('fab').style.display='none';
 }
 function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML;}
 function catObj(id){return CATS.find(c=>c.id===id)||CATS[0];}
@@ -482,7 +521,7 @@ function renderHome(){
   const achState={streak,tasksDone,focusMins,habitsToday:habDone,level};
 
   el.innerHTML=`
-    <div class="greeting"><h1>${greet}, Sachin 👋</h1><p>${new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'})}</p></div>
+    <div class="greeting"><h1>${greet}${userName?', '+esc(userName):''} 👋</h1><p>${new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'})}</p></div>
     <div class="level-bar">
       <div class="level-info"><span class="level-label">Level ${level} — ${['Beginner','Starter','Achiever','Warrior','Champion','Legend','Master'][Math.min(level-1,6)]}</span><span class="level-xp">${xp%xpNeeded}/${xpNeeded} XP</span></div>
       <div class="xp-bar"><div class="xp-fill" style="width:${xpPct}%"></div></div>
@@ -683,32 +722,88 @@ function tickTimer(){
 }
 
 /* ----- HABITS ----- */
+const HABIT_ICONS = ['💧','🏋️','📚','🧘','🥗','😴','🏃','✍️','🎵','💊','🧹','📵','🌅','🥤','🎯'];
+let editHabitId=null,selHabitIcon='💧';
+
 function renderHabits(){
   const el=document.getElementById('s-habits');
   const done=habits.filter(h=>h.today).length;
+  const pct=habits.length>0?Math.round(done/habits.length*100):0;
   el.innerHTML=`
-    <div style="padding-top:52px"><div class="section-title">Daily Habits</div></div>
-    <div class="card" style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+    <div style="padding-top:52px;display:flex;justify-content:space-between;align-items:center"><div class="section-title">Daily Habits</div><button style="background:var(--blue);color:#fff;border:none;border-radius:100px;padding:8px 16px;font-size:13px;font-weight:600;font-family:var(--font);cursor:pointer" onclick="openHabitSheet()">+ Add</button></div>
+    ${habits.length>0?`<div class="card" style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
       <div><div style="font-size:14px;font-weight:600">Today's Progress</div><div style="font-size:12px;color:var(--text2)">${done} of ${habits.length} completed</div></div>
-      <div style="font-size:24px;font-weight:700;color:${done===habits.length?'var(--green)':'var(--orange)'}">${Math.round(done/habits.length*100)}%</div>
-    </div>
+      <div style="font-size:24px;font-weight:700;color:${done===habits.length?'var(--green)':'var(--orange)'}">${pct}%</div>
+    </div>`:''}
+    ${habits.length===0?'<div class="empty-msg"><div class="em-icon">💪</div><p>No habits yet. Tap + Add to create one!</p></div>':''}
     ${habits.map(h=>`
       <div class="habit-item">
         <div class="habit-top">
           <div class="habit-info"><span class="habit-icon">${h.icon}</span><div><div class="habit-name">${esc(h.name)}</div><div class="habit-streak">🔥 ${h.streak} day streak</div></div></div>
-          <button class="habit-check${h.today?' done':''}" onclick="toggleHabit('${h.id}')">${h.today?'✓':''}</button>
+          <div style="display:flex;gap:6px;align-items:center">
+            <button style="border:none;background:none;color:var(--text3);font-size:14px;cursor:pointer;padding:4px" onclick="openEditHabit('${h.id}')">✎</button>
+            <button style="border:none;background:none;color:var(--text3);font-size:14px;cursor:pointer;padding:4px" onclick="deleteHabit('${h.id}')">✕</button>
+            <button class="habit-check${h.today?' done':''}" onclick="toggleHabit('${h.id}')">${h.today?'✓':''}</button>
+          </div>
         </div>
         <div class="habit-week">${['M','T','W','T','F','S','S'].map((d,i)=>`<div class="habit-day${h.week[i]?' filled':''}" title="${d}"></div>`).join('')}</div>
       </div>
     `).join('')}
   `;
 }
+
+function openHabitSheet(){
+  editHabitId=null;selHabitIcon='💧';
+  document.getElementById('habitSheetTitle').textContent='New Habit';
+  document.getElementById('habitSubmitBtn').textContent='Add Habit';
+  document.getElementById('habitInpName').value='';
+  renderHabitIcons();
+  document.getElementById('habitSheet').classList.add('open');
+  setTimeout(()=>document.getElementById('habitInpName').focus(),200);
+}
+
+function openEditHabit(id){
+  const h=habits.find(x=>x.id===id);if(!h)return;
+  editHabitId=id;selHabitIcon=h.icon;
+  document.getElementById('habitSheetTitle').textContent='Edit Habit';
+  document.getElementById('habitSubmitBtn').textContent='Save';
+  document.getElementById('habitInpName').value=h.name;
+  renderHabitIcons();
+  document.getElementById('habitSheet').classList.add('open');
+}
+
+function closeHabitSheet(){document.getElementById('habitSheet').classList.remove('open');editHabitId=null;}
+
+function renderHabitIcons(){
+  document.getElementById('habitIconPicker').innerHTML=HABIT_ICONS.map(i=>`<button style="width:40px;height:40px;border-radius:10px;border:2px solid ${i===selHabitIcon?'var(--blue)':'transparent'};background:${i===selHabitIcon?'rgba(0,122,255,.1)':'var(--card)'};font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center" onclick="selHabitIcon='${i}';renderHabitIcons()">${i}</button>`).join('');
+}
+
+function submitHabit(){
+  const name=document.getElementById('habitInpName').value.trim();
+  if(!name)return document.getElementById('habitInpName').focus();
+  if(editHabitId){
+    const h=habits.find(x=>x.id===editHabitId);
+    if(h){h.name=name;h.icon=selHabitIcon;}
+    toast('Habit updated');
+  } else {
+    habits.push({id:'h'+(++idC),name,icon:selHabitIcon,color:'#007aff',streak:0,week:[0,0,0,0,0,0,0],today:false});
+    toast('Habit added!');
+  }
+  saveAll();closeHabitSheet();renderHabits();
+}
+
+function deleteHabit(id){
+  if(!confirm('Delete this habit?'))return;
+  habits=habits.filter(h=>h.id!==id);
+  saveAll();renderHabits();toast('Habit deleted');
+}
+
 function toggleHabit(id){
   const h=habits.find(x=>x.id===id);if(!h)return;
   h.today=!h.today;
   if(h.today){h.streak++;xp+=15;checkLevelUp();toast(`${h.name} done! +15 XP`);}
   else{h.streak=Math.max(0,h.streak-1);}
-  const allDone=habits.every(h=>h.today);
+  const allDone=habits.length>0&&habits.every(h=>h.today);
   if(allDone){xp+=50;checkLevelUp();toast('All habits done! +50 XP 🏆');fireConfetti();}
   saveAll();renderHabits();if(curScreen==='home')renderHome();
 }
@@ -738,8 +833,8 @@ function renderFinance(){
   el.innerHTML=`
     <div class="sub-header"><button class="back-btn" onclick="go('more')">←</button><h1>Finance</h1></div>
     <div class="finance-summary">
-      <div class="fin-card" style="background:linear-gradient(135deg,#007aff,#5856d6)"><div class="fin-val">₹${todayTotal.toLocaleString()}</div><div class="fin-lbl">Today's Spending</div></div>
-      <div class="fin-card" style="background:linear-gradient(135deg,#ff9500,#ff2d55)"><div class="fin-val">₹${monthTotal.toLocaleString()}</div><div class="fin-lbl">This Month</div></div>
+      <div class="fin-card" style="background:linear-gradient(135deg,#007aff,#5856d6);box-shadow:0 0 20px rgba(0,122,255,.25)"><div class="fin-val">₹${todayTotal.toLocaleString()}</div><div class="fin-lbl">Today's Spending</div></div>
+      <div class="fin-card" style="background:linear-gradient(135deg,#ff9500,#ff2d55);box-shadow:0 0 20px rgba(255,45,85,.25)"><div class="fin-val">₹${monthTotal.toLocaleString()}</div><div class="fin-lbl">This Month</div></div>
     </div>
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
       <div class="section-title" style="margin:0">Recent</div>
@@ -830,13 +925,20 @@ function renderSettings(){
   document.getElementById('s-settings').innerHTML=`
     <div class="sub-header"><button class="back-btn" onclick="go('more')">←</button><h1>Settings</h1></div>
     <div class="card">
+      <div class="setting-row">
+        <span class="setting-label">Your Name</span>
+        <div style="display:flex;gap:8px;align-items:center">
+          <input type="text" id="settingsName" value="${esc(userName)}" placeholder="Enter name" style="padding:8px 12px;font-size:14px;font-family:var(--font);border:1px solid var(--sep);border-radius:10px;background:var(--bg);color:var(--text);outline:none;width:140px" />
+          <button onclick="userName=document.getElementById('settingsName').value.trim();localStorage.setItem('pk_name',userName);toast('Name saved!')" style="background:var(--blue);color:#fff;border:none;border-radius:10px;padding:8px 14px;font-size:12px;font-weight:600;font-family:var(--font);cursor:pointer">Save</button>
+        </div>
+      </div>
       <div class="setting-row"><span class="setting-label">Dark Mode</span><button class="toggle${darkMode?' on':''}" onclick="toggleDark()"></button></div>
       <div class="setting-row"><span class="setting-label">Reset All Data</span><button style="background:var(--red);color:#fff;border:none;border-radius:10px;padding:8px 16px;font-size:13px;font-weight:600;font-family:var(--font);cursor:pointer" onclick="if(confirm('Reset everything?')){localStorage.clear();location.reload();}">Reset</button></div>
     </div>
     <div class="card" style="text-align:center;color:var(--text2);font-size:13px">
       <div style="font-size:24px;margin-bottom:4px">⚡</div>
       <div style="font-weight:600">Pulsekit v1.0</div>
-      <div style="font-size:12px;margin-top:2px">Made for Sachin</div>
+      <div style="font-size:12px;margin-top:2px">${userName?'Made for '+esc(userName):'Your life, organized'}</div>
     </div>
   `;
 }
